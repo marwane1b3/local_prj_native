@@ -1,32 +1,41 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import defaultLabels from "../utils/labels";
 
 import {
   makeSelectData,
   makeSelectError,
+  makeSelectLoading,
 } from "../containers/AppContainer/selectors";
 import { createStructuredSelector } from "reselect";
 import { useSelector } from "react-redux";
 const stateSelector = createStructuredSelector({
   error: makeSelectError,
-
+  loading: makeSelectLoading,
   dataParsed: makeSelectData,
 });
 const LabelContext = createContext();
 
 const TextLabels = ({ children }) => {
-  const { error, dataParsed } = useSelector(stateSelector);
+  const { error, dataParsed, loading } = useSelector(stateSelector);
   const [Labels, setLabels] = useState(defaultLabels);
+  const index = useRef(0);
 
   const reloadContexedDataFunction = () => {
-    const localObject = {
-      title: dataParsed?.activity,
-    };
-    setLabels((prev) => ({ ...prev, ...localObject }));
+    index.current++;
+    setLabels((prev) => ({
+      ...prev,
+      [`title ${index.current}`]: dataParsed?.activity,
+    }));
   };
 
   useEffect(() => {
-    reloadContexedDataFunction();
+    if (!error && !loading) reloadContexedDataFunction();
   }, [dataParsed, error]);
 
   return (

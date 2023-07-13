@@ -1,5 +1,11 @@
 import React, { useEffect } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { createStructuredSelector } from "reselect";
 
@@ -36,6 +42,13 @@ const AppContainer = () => {
   };
 
   const contextLabels = useLabelsContext();
+
+  const renderItemFunction = ({ item }) =>
+    item ? (
+      <View style={styles.renderedComponentStyles}>
+        <Text style={styles.contentCenteredBodyStyles}>{item}</Text>
+      </View>
+    ) : null;
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.LocalContainerStyles}>
@@ -67,13 +80,24 @@ const AppContainer = () => {
       >
         <Text style={styles.headerStyles}>context data </Text>
 
-        <View style={styles.contentCenteredStyles}>
+        <View
+          style={[
+            styles.contentCenteredStyles,
+            {
+              flex: 1,
+            },
+          ]}
+        >
           <Text style={styles.contentCenteredHeaderStyles}>
             content from context :
           </Text>
-          <Text style={styles.contentCenteredBodyStyles}>
-            {contextLabels?.title}
-          </Text>
+
+          <FlatList
+            data={Object.values(contextLabels)}
+            renderItem={renderItemFunction}
+            contentContainerStyle={styles.flatListContainerStyles}
+            showsVerticalScrollIndicator={false}
+          />
         </View>
       </View>
     </SafeAreaView>
@@ -130,5 +154,17 @@ const styles = StyleSheet.create({
     color: "white",
     letterSpacing: 0.8,
     textAlign: "center",
+  },
+  flatListContainerStyles: {
+    margin: 15,
+    paddingBottom: 20,
+  },
+  renderedComponentStyles: {
+    flex: 1,
+    borderWidth: 1,
+    borderRadius: 15,
+    borderColor: "black",
+    paddingVertical: 10,
+    marginVertical: 5,
   },
 });

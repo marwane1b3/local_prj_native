@@ -7,13 +7,9 @@ import {
 import { makeSelectData } from "./selectors";
 function* getEndPointGenerator() {
   try {
-    console.log("inside saga");
-
     // pour state selection inside saga point fort inter-conponents .
 
     const data = yield select(makeSelectData);
-
-    console.log(data);
 
     // faire apelle api  inside saga point fort tu garde la meme method d'apelle inside call function .
 
