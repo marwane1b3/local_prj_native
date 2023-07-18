@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import {
   StyleSheet,
   Text,
@@ -27,6 +27,43 @@ const stateSelector = createStructuredSelector({
   loading: makeSelectLoading,
   user: makeSelectData,
 });
+
+const createStoreFunction = ({
+  props = {
+    leftHeader: string,
+    rightHeader: string,
+    moneySum: number,
+    totalDivider: number,
+  },
+}) => {
+  const calcuteFctoriaLFunction = useMemo(() => {
+    let x,
+      y,
+      z = 0;
+
+    return x + y + z;
+  }, []);
+
+  return (
+    <React.Fragment>
+      <View style={styles.leftContainer}>
+        <View>
+          <Text>{props.leftHeader}</Text>
+          <View style={styles.moneyContainer}>
+            <Text>{props.totalDivider}</Text>
+            <Text>{props.rightHeader}</Text>
+            <Text>
+              {calcuteFctoriaLFunction()} {"DH"}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.rightContqiner}>
+          <Text>{props.rightHeader}</Text>
+        </View>
+      </View>
+    </React.Fragment>
+  );
+};
 const AppContainer = () => {
   useInjectReducer({ key, reducer });
   useInjectSaga({ key, saga });
